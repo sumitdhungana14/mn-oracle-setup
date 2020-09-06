@@ -1,6 +1,7 @@
 package test.app.course;
 
-import test.app.teacher.Teacher;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import test.app.coursematerial.CourseMaterial;
 
 import javax.persistence.*;
 
@@ -9,14 +10,13 @@ import javax.persistence.*;
 public class Course {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "TEACHER_ID", referencedColumnName = "ID")
-    private Teacher teacher;
+    @JsonIgnore
+    @OneToOne(mappedBy = "course", fetch = FetchType.LAZY)
+    private CourseMaterial material;
 
     public Long getId() {
         return id;
@@ -32,5 +32,13 @@ public class Course {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public CourseMaterial getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(CourseMaterial material) {
+        this.material = material;
     }
 }
