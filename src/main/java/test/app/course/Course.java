@@ -1,6 +1,6 @@
 package test.app.course;
 
-import test.app.teacher.Teacher;
+import test.app.coursematerial.CourseMaterial;
 
 import javax.persistence.*;
 
@@ -14,9 +14,8 @@ public class Course {
 
     private String title;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "TEACHER_ID", referencedColumnName = "ID")
-    private Teacher teacher;
+    @OneToOne(mappedBy = "course")
+    private CourseMaterial material;
 
     public Long getId() {
         return id;
@@ -32,5 +31,13 @@ public class Course {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public CourseMaterial getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(CourseMaterial material) {
+        this.material = material;
     }
 }
