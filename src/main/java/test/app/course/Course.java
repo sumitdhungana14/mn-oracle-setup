@@ -1,21 +1,28 @@
 package test.app.course;
 
-import test.app.coursematerial.CourseMaterial;
+import test.app.student.Student;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "courses")
 @Table(schema = "mn_oracle")
 public class Course {
 
     @Id
-    @GeneratedValue
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
 
-    @OneToOne(mappedBy = "course")
-    private CourseMaterial material;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "STUDENTS_COURSES",
+            joinColumns = @JoinColumn(name = "COURSE_ID", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID")
+    )
+    private List<Student> students;
 
     public Long getId() {
         return id;
@@ -33,11 +40,11 @@ public class Course {
         this.title = title;
     }
 
-    public CourseMaterial getMaterial() {
-        return material;
+    public List<Student> getStudents() {
+        return students;
     }
 
-    public void setMaterial(CourseMaterial material) {
-        this.material = material;
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
